@@ -179,11 +179,11 @@
 
 
 import React, { Component } from 'react';
-import Person from './Person/Person'
+import Person from '../components/Persons/Person/Person'
 import './App.css';
 // import Radium,{StyleRoot} from 'radium'
 import styled from 'styled-components'
-import Errorboundary from './ErrorBoundary/ErrorBoundary'
+import Errorboundary from '../ErrorBoundary/ErrorBoundary'
 
 const StyledButton = styled.button`
 background-color:${props=>props.alt?'red':"green"},
