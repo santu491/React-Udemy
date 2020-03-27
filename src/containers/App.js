@@ -316,15 +316,17 @@ import './App.css';
 // import Radium,{StyleRoot} from 'radium'
 import styled from 'styled-components'
 import Errorboundary from '../ErrorBoundary/ErrorBoundary'
+import Persons from '../components/Persons/Persons'
+import Cockpit from '../components/Cockpit/Cockpit'
 
 const StyledButton = styled.button`
-background-color:${props=>props.alt?'red':"green"},
+background-color:${props => props.alt ? 'red' : "green"},
 color:white,  
 font-size:17,
 padding:16,
 cursor:pointer,
 &:hover {
-  background-color:${props=>props.alt?"green":"lightGreen"},
+  background-color:${props => props.alt ? "green" : "lightGreen"},
   color:blue
 `;
 
@@ -373,51 +375,20 @@ class App extends Component {
 
   render() {
     let personData = null
-    const style = {
-      backgroundColor: "green",
-      color: "white",
-      fontSize: 17,
-      padding: 16,
-      cursor: "pointer",
-      ':hover': {
-        backgroundColor: 'lightGreen',
-        color: "blue"
-      },
-    }
     if (this.state.isPersonDetailsEnabled) {
-      personData = this.state.person.map((person, index) => {
-        return (
-          <Errorboundary key={person.id}>
-          <Person name={person.name} age={person.age}
-            selectedindex={index}
-            deletePersonDetail={(index) => this.deletePersonDetail(index)}
-            nameChangHandler={(e) => this.nameChangHandler(e, person.id)}
-            key={person.id}
-          />
-          </Errorboundary>
-        )
-      })
-      style.backgroundColor = "red"
-      style[':hover'] = {
-        backgroundColor: 'samlon',
-        color: "green"
-      }
-    }
-
-    const classes = [];
-    if (this.state.person.length <= 1) {
-      classes.push("red")
-    }
-    else if (this.state.person.length >= 2) {
-      classes.push("bold")
+      personData = <Persons
+        person={this.state.person}
+        deletePersonDetail={(index) => this.deletePersonDetail(index)}
+        nameChangHandler={(e, id) => this.nameChangHandler(e, id)}
+      />
     }
     return (
 
       <div className="App">
-
-        <h1>I am a React App</h1>
-        <p className={classes.join(" ")}> This is really working</p>
-        <button style={style} onClick={this.togglePesonDetails}>Toggle Person</button>
+        <Cockpit togglePesonDetails={this.togglePesonDetails}
+        person={this.state.person}
+        isPersonDetailsEnabled={this.state.isPersonDetailsEnabled}
+        />
         {/* <StyledButton alt={this.state.isPersonDetailsEnabled} onClick={this.togglePesonDetails}>Toggle Person</StyledButton> */}
         {/* {
           this.state.isPersonDetailsEnabled ?
@@ -430,7 +401,6 @@ class App extends Component {
             null
         } */}
         {personData}
-
       </div>
 
     );
