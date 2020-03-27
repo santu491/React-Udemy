@@ -1,7 +1,14 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import classes from './Cockpit.css'
 
 const Cockpit = (props) => {
+
+    useEffect(() => {
+        console.log("cockpit useeffect called")
+        setTimeout(() => {
+           // alert("hii")
+        }, 1000)
+    },[props.person])
     const style = {
         backgroundColor: "green",
         color: "white",
@@ -15,11 +22,11 @@ const Cockpit = (props) => {
     }
 
     const assignedClasses = [];
-    if(props.isPersonDetailsEnabled){
+    if (props.isPersonDetailsEnabled) {
         style.backgroundColor = "red"
         style[':hover'] = {
-          backgroundColor: 'blue',
-          color: "green"
+            backgroundColor: 'blue',
+            color: "green"
         }
     }
     if (props.person.length <= 1) {
@@ -27,8 +34,8 @@ const Cockpit = (props) => {
         // assignedClasses.push(classes.red)
     }
     else if (props.person.length >= 2) {
-         assignedClasses.push("bold")
-      //  assignedClasses.push(classes.bold)
+        assignedClasses.push("bold")
+        //  assignedClasses.push(classes.bold)
     }
     return (
         <div>
@@ -39,4 +46,4 @@ const Cockpit = (props) => {
     )
 }
 
-export default Cockpit
+export default React.memo(Cockpit) 
