@@ -183,6 +183,7 @@ import Person from './Person/Person'
 import './App.css';
 // import Radium,{StyleRoot} from 'radium'
 import styled from 'styled-components'
+import Errorboundary from './ErrorBoundary/ErrorBoundary'
 
 const StyledButton = styled.button`
 background-color:${props=>props.alt?'red':"green"},
@@ -254,12 +255,14 @@ class App extends Component {
     if (this.state.isPersonDetailsEnabled) {
       personData = this.state.person.map((person, index) => {
         return (
+          <Errorboundary key={person.id}>
           <Person name={person.name} age={person.age}
             selectedindex={index}
             deletePersonDetail={(index) => this.deletePersonDetail(index)}
             nameChangHandler={(e) => this.nameChangHandler(e, person.id)}
             key={person.id}
           />
+          </Errorboundary>
         )
       })
       style.backgroundColor = "red"
