@@ -1,14 +1,20 @@
-import React, { useEffect } from 'react'
+import React, { useEffect,useRef } from 'react'
 import classes from './Cockpit.css'
+import Authinticate from '../../context/auth-context'
 
 const Cockpit = (props) => {
-
+ const buttonToggleRef=useRef()
     useEffect(() => {
         console.log("cockpit useeffect called")
         setTimeout(() => {
            // alert("hii")
         }, 1000)
     },[props.person])
+
+useEffect(()=>{
+    buttonToggleRef.current.click()
+},[])
+
     const style = {
         backgroundColor: "green",
         color: "white",
@@ -41,7 +47,14 @@ const Cockpit = (props) => {
         <div>
             <h1>I am a React App</h1>
             <p className={assignedClasses.join(" ")}> This is really working</p>
-            <button style={style} onClick={props.togglePesonDetails}>Toggle Person</button>
+            <button ref={buttonToggleRef} style={style} onClick={props.togglePesonDetails}>Toggle Person</button>
+          <Authinticate.Consumer>
+           { 
+           (context)=>
+           <button  style={style} onClick={context.loginauthenticated}>login</button>
+           
+           }
+            </Authinticate.Consumer>
         </div>
     )
 }

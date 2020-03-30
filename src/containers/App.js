@@ -318,6 +318,8 @@ import styled from 'styled-components'
 import Errorboundary from '../ErrorBoundary/ErrorBoundary'
 import Persons from '../components/Persons/Persons'
 import Cockpit from '../components/Cockpit/Cockpit'
+import withClass from '../hoc/withClass'
+import AuthContext from './../context/auth-context'
 
 const StyledButton = styled.button`
 background-color:${props => props.alt ? 'red' : "green"},
@@ -340,7 +342,9 @@ class App extends Component {
         { id: 1, name: "Ram", age: 30 },
         { id: 2, name: "aravind", age: 25 }
       ],
-      isPersonDetailsEnabled: false
+      isPersonDetailsEnabled: false,
+      count: 0,
+      isAuthenticated: false
     }
 
   }
@@ -367,10 +371,22 @@ class App extends Component {
   deletePersonDetail = (selectedndex) => {
     let persons = this.state.person
     persons.splice(selectedndex, 1)
-    this.setState({
-      person: persons
-    })
+    // this.setState({
+    //   person: persons
+    // })
 
+    // If setState ids depends on prevoius state then we have to use like thi
+    this.setState((prevState, props) => {
+      return {
+        person: persons,
+        count: prevState.count + 1
+      }
+
+    })
+  }
+
+  loginauthenticated = () => {
+    this.setState({ isAuthenticated: true })
   }
 
   render() {
@@ -380,15 +396,23 @@ class App extends Component {
         person={this.state.person}
         deletePersonDetail={(index) => this.deletePersonDetail(index)}
         nameChangHandler={(e, id) => this.nameChangHandler(e, id)}
+        isAuthenticated={this.state.isAuthenticated}
       />
     }
     return (
 
       <div className="App">
+        <AuthContext.Provider value={{
+          loginauthenticated:this.loginauthenticated,
+          isAuthenticated:this.state.isAuthenticated
+        }}>
         <Cockpit togglePesonDetails={this.togglePesonDetails}
-        person={this.state.person}
-        isPersonDetailsEnabled={this.state.isPersonDetailsEnabled}
+          person={this.state.person}
+          isPersonDetailsEnabled={this.state.isPersonDetailsEnabled}
+          //loginauthenticated={this.loginauthenticated}
         />
+        {personData}
+        </AuthContext.Provider>
         {/* <StyledButton alt={this.state.isPersonDetailsEnabled} onClick={this.togglePesonDetails}>Toggle Person</StyledButton> */}
         {/* {
           this.state.isPersonDetailsEnabled ?
@@ -400,11 +424,11 @@ class App extends Component {
             :
             null
         } */}
-        {personData}
+
       </div>
 
     );
   }
 }
 
-export default App;
+export default withClass(App);

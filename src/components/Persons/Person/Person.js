@@ -26,6 +26,8 @@
 import React from 'react'
 import './Person.css'
 import styled from 'styled-components'
+import PropTypes from 'prop-types'
+import Authinticate from '../../../context/auth-context'
 
 const StyleDiv = styled.div`
 width:60%;
@@ -53,12 +55,22 @@ const Person = (props) => {
     return (
         // <div className="Person" style={style}>
         <StyleDiv>
+            <Authinticate.Consumer>
+            {(context)=>context.isAuthenticated?<p>user is authenticated..!!</p>:<p>click login button to authenticate</p>}
+            </Authinticate.Consumer>
             <h4 onClick={() => props.deletePersonDetail(props.selectedindex)}>I am {props.name}. I have {props.age} years old</h4>
             <p>{props.children}</p>
             <input type="text" onChange={(e) => props.nameChangHandler && props.nameChangHandler(e)} value={props.name} />
             {/* </div> */}
         </StyleDiv>
     )
+}
+
+Person.propTypes={
+    deletePersonDetail:PropTypes.func,
+    name:PropTypes.string,
+    nameChangHandler:PropTypes.func,
+    age:PropTypes.number
 }
 
 export default Person
